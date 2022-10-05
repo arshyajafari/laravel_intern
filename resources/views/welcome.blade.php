@@ -6,10 +6,8 @@
 
     <title>Laravel</title>
 
-    <!-- Fonts -->
     <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <!-- Styles -->
     <style>
         *, :after, :before {
             box-sizing: border-box;
@@ -39,7 +37,8 @@
         }
 
         .flex {
-            display: flex
+            display: flex;
+            flex-direction: column;
         }
 
         .justify-center {
@@ -57,6 +56,10 @@
 
         .relative {
             position: relative
+        }
+
+        a {
+            text-decoration: none;
         }
 
         @media (min-width: 640px) {
@@ -87,7 +90,8 @@
 <body class="antialiased">
 <div
     class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
-    <span class="dark:text-white">Hello laravel</span>
+    <p class="dark:text-white">Welcome</p>
+    <a href="./index" class="dark:text-white">Go to -></a>
 </div>
 </body>
 </html>
