@@ -91,7 +91,7 @@
 <div
     class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
     <p class="dark:text-white">Welcome</p>
-    <a href="./index" class="dark:text-white">Go to -></a>
+    <a href="./api/index" class="dark:text-white">Go to -></a>
 </div>
 </body>
 </html>
