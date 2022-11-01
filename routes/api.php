@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductController;
 
 /*
@@ -17,8 +18,16 @@ Route::get('/index', function () {
     return view('/index');
 });
 
-Route::post('/products', [ProductController::class, 'store']);
-Route::get('/products', [ProductController::class, 'get']);
-Route::get('/products/{id}', [ProductController::class, 'getById']);
-Route::put('/products/{id}', [ProductController::class, 'updateById']);
-Route::delete('/products/{id}', [ProductController::class, 'deleteById']);
+Route::group([
+    'middleware' => [
+        'auth:admin'
+    ],
+], function (){
+    Route::post('/products', [ProductController::class, 'store']);
+    Route::get('/products', [ProductController::class, 'get']);
+    Route::get('/products/{id}', [ProductController::class, 'getById']);
+    Route::put('/products/{id}', [ProductController::class, 'updateById']);
+    Route::delete('/products/{id}', [ProductController::class, 'deleteById']);
+});
+
+Route::post('/admin/login', [AdminController::class, 'login']);
