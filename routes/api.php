@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use \App\Http\Controllers\ClassController;
 use App\Http\Controllers\ProductController;
+use \App\Http\Controllers\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +20,8 @@ Route::get('/index', function () {
     return view('/index');
 });
 
+Route::post('/admin/login', [AdminController::class, 'login']);
+
 Route::group([
     'middleware' => [
         'auth:admin'
@@ -28,6 +32,12 @@ Route::group([
     Route::get('/products/{id}', [ProductController::class, 'getById']);
     Route::put('/products/{id}', [ProductController::class, 'updateById']);
     Route::delete('/products/{id}', [ProductController::class, 'deleteById']);
-});
 
-Route::post('/admin/login', [AdminController::class, 'login']);
+    Route::post('/student', [StudentController::class, 'store']);
+    Route::get('/student', [StudentController::class, 'get']);
+    Route::get('/student/{id}', [StudentController::class, 'getById']);
+
+    Route::post('/class', [ClassController::class, 'store']);
+    Route::get('/class', [ClassController::class, 'get']);
+    Route::get('/class/{id}', [ClassController::class, 'getById']);
+});
