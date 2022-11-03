@@ -19,7 +19,7 @@ class AdminController extends Controller
 
         if (! empty($admin) && Hash::check($loginData['password'], $admin->password))
         {
-            $token = $admin->createToken('authToken');
+            $token = $admin->createToken('auth_token');
 
             return response()->json([
                 'token' => $token->plainTextToken
