@@ -33,7 +33,7 @@ class StudentModel extends Model
         return $this->belongsTo(ClassModel::class, "class_id", "id");
     }
 
-    public function studentsInClass ()
+    public function studentInClasses ()
     {
         return $this->belongsToMany(ClassModel::class, 'student_class', 'student_id', 'class_id');
     }

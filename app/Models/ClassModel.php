@@ -16,7 +16,7 @@ class ClassModel extends Model
         "description"
     ];
 
-    public function studentInClasses ()
+    public function studentsInClass ()
     {
         return $this->belongsToMany(StudentModel::class, 'student_class', 'class_id', 'student_id');
     }
