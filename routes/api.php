@@ -36,6 +36,7 @@ Route::group([
     Route::post('/student', [StudentController::class, 'store']);
     Route::get('/student', [StudentController::class, 'get']);
     Route::get('/student/{id}', [StudentController::class, 'getById']);
+    Route::put('/student/{id}', [StudentController::class, 'updateStudentClass']);
 
     Route::post('/class', [ClassController::class, 'store']);
     Route::get('/class', [ClassController::class, 'get']);
