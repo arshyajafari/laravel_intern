@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class StudentController extends Controller
 {
@@ -14,7 +15,7 @@ class StudentController extends Controller
     {
         $data = $request->validate([
             "full_name" => ['required', 'string', 'max:150'],
-            "email" => ['required', 'email', 'max:100'],
+            "email" => ['required', 'email', 'max:100', 'unique:students'],
             "phone_number" => ['required', 'string', 'max:20'],
             "national_code" => ['required', 'string', 'max:15'],
             "birth_date" => ['required', 'string', 'max:15'],
@@ -22,7 +23,7 @@ class StudentController extends Controller
             "city" => ['required', 'string', 'max:100'],
             "gender" => ['required', 'string', 'max:100'],
             "password" => ['required', 'string', 'max:100'],
-            "class_id" => ['string', 'max:20']
+            "class_id" => ['string']
         ]);
 
         $data['password'] = Hash::make($data['password']);
@@ -39,30 +40,68 @@ class StudentController extends Controller
         ]);
     }
 
-    public function get (Request $request)
+    public function updateStudentClass (Request $request,string $id)
     {
-        $eloquent = (new StudentModel())->with('studentsInClass');
+        $student = StudentModel::where('id', $id)->first();
 
-        $queries = $request->validate([
-            'class_id' => ['string', 'max:20']
+        $data = $request->validate([
+            "class_id" => ['string', 'max:20']
         ]);
 
-        if (isset($queries['class_id']))
+        $class_id = array();
+
+        array_push($class_id, $data['class_id']);
+
+        foreach ($class_id as $value)
         {
-            $eloquent = $eloquent->whereHas('studentsInClass', function ($query) use ($queries)
+            if ($student->class_id == $value)
             {
-                $query->where('classes.id', $queries['class_id']);
-            });
+                return response()->json(
+                    [
+                        'code' => '2',
+                        'message' => 'this student has been added to this class'
+                    ],
+                    ResponseAlias::HTTP_BAD_REQUEST
+                );
+            }
         }
 
+        StudentModel::where('id', $id)->update($data);
+
+        DB::table('student_class')->insert([
+            'class_id' => $data['class_id'],
+            'student_id' => $id,
+        ]);
+
+        return response()->json([
+            'message' => 'student\'s class has been updated successfully'
+        ]);
+    }
+
+    public function get (Request $request)
+    {
+//        $eloquent = (new StudentModel())->with('studentInClasses');
+//
+//        $queries = $request->validate([
+//            'class_id' => ['string', 'max:20']
+//        ]);
+//
+//        if (isset($queries['class_id']))
+//        {
+//            $eloquent = $eloquent->whereHas('studentInClasses', function ($query) use ($queries)
+//            {
+//                $query->where('classes.id', $queries['class_id']);
+//            });
+//        }
+
         return response()->json(
-            $eloquent->get()
+            StudentModel::get()
         );
     }
 
     public function getById (string $id): JsonResponse
     {
-        $student = StudentModel::where('id', $id)->first();
+        $student = StudentModel::where('id', $id)->with('studentInClasses')->first();
 
         if (! empty($student))
         {

@@ -21,14 +21,15 @@ class ClassController extends Controller
     }
 
     public function get (): JsonResponse {
+        // with('studentsInClass')
         return response()->json(
-            ClassModel::with('studentInClasses')->get()
+            ClassModel::get()
         );
     }
 
     public function getById (string $id): JsonResponse
     {
-        $class = ClassModel::where('id', $id)->with('studentInClasses')->first();
+        $class = ClassModel::where('id', $id)->with('studentsInClass')->first();
 
         if (! empty($class))
         {
