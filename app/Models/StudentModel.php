@@ -28,12 +28,7 @@ class StudentModel extends Model
         'password'
     ];
 
-    public function studentInClass()
-    {
-        return $this->belongsTo(ClassModel::class, "class_id", "id");
-    }
-
-    public function studentInClasses ()
+    public function classes ()
     {
         return $this->belongsToMany(ClassModel::class, 'student_class', 'student_id', 'class_id');
     }
