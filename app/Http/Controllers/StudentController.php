@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\StudentResource;
 
 class StudentController extends Controller
 {
@@ -26,15 +27,8 @@ class StudentController extends Controller
 
         $data['password'] = Hash::make($data['password']);
 
-        $student = StudentModel::create($data);
-
-        DB::table('student_class')->insert([
-            'class_id' => $data['class_id'],
-            'student_id' => $student->id,
-        ]);
-
         return response()->json([
-            'message' => 'student stored successfully'
+            StudentModel::create($data)
         ]);
     }
 
@@ -52,7 +46,7 @@ class StudentController extends Controller
         if (! empty($student))
         {
             return response()->json(
-                $student
+                new StudentResource($student)
             );
         }
 

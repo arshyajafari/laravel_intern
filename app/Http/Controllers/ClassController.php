@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ClassResource;
 use App\Models\ClassModel;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -24,7 +25,7 @@ class ClassController extends Controller
 
     public function get (): JsonResponse {
         return response()->json(
-            ClassModel::get()
+            ClassResource::collection(ClassModel::with('students')->get())
         );
     }
 
